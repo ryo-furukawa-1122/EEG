@@ -8,6 +8,7 @@ class Loadings():
         self.directory: str
         self.date: list[str]
         self.file: list[float]
+        self.scale: float
 
     def read_config(self):
         """Return the path of working directory, date, and file name"""
@@ -16,7 +17,8 @@ class Loadings():
         self.directory = config['directory']
         self.date = config['date']
         self.file = config['file']
-        return self.directory, self.date, self.file
+        self.scale = config['scale']  # in mV
+        return self.directory, self.date, self.file, self.scale
     
     def read_mat(self, file:str):
         """Read mat file and return dict"""

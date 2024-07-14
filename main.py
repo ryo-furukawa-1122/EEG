@@ -1,10 +1,30 @@
 # %%
 import general.loadings as ld
+import general.settings as st
+import analysis.waveform as wv
+import analysis.filter as fl
+import numpy as np
 
-directory, date, file = ld.Loadings().read_config()
+E_NAME = "EVT01"
+FS, PRE_STIMULI, POST_STIMULI, chs, stimuli = st.Settings().set_basic_params()
+kwargs_signal, kwargs_stimuli = st.Settings().set_plot_theme()
+directory, date, file, scale = ld.Loadings().read_config()
+data = ld.Loadings().read_mat(f'{directory}/{date}/{file}.mat')
 
-mat = ld.Loadings().read_mat(f'{directory}/{date}/{file}.mat')
+t = np.arange(-PRE_STIMULI, POST_STIMULI, 1/FS)
+stim_number = stimuli["2 kHz"]
+lag = data[f"WB{chs[0]:02}_ts"]
+lag_sample = int(lag * FS)
 
+stim_times = data[E_NAME][stim_number::5] - lag
+stim_stamp = np.array([int((stim_time) * FS) for stim_time in stim_times])
+
+# %%
+signals = wv.Waveform().arange_data(data, chs, stim_stamp, FS, PRE_STIMULI, POST_STIMULI)
+# %%
+filtered_signals = fl.Filter().filter_signals(signals, FS)
+
+# %%
 # ---
 import numpy as np
 import pandas as pd
@@ -43,19 +63,19 @@ Ch = 'Ch'
 name = 'ampsum_leave'
 plt.rcParams["font.size"] = 14
 
-lag_base = mat['WB09_ts']
-lagsample_base = int(lag_base * fs1)
+# lab = mat['WB09_ts']
+# lag_sample = int(lab * fs1)
 
 sttime_base = mat['EVT01'][stimuli::5] + base_left 
 lists_st_base = [] 
 for sm in sttime_base:
-    stsample_base = int(sm * fs1 - lagsample_base)
+    stsample_base = int(sm * fs1 - lag_sample)
     lists_st_base.append(stsample_base) 
 
 edtime_base = mat['EVT01'][stimuli::5] + base_right 
 lists_ed_base = []
 for sm2 in edtime_base:
-    edsample_base = int(sm2 * fs1 - lagsample_base)
+    edsample_base = int(sm2 * fs1 - lag_sample)
     lists_ed_base.append(edsample_base)
 
 amp_sum_base = []
