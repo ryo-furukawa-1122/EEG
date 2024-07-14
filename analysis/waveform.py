@@ -22,3 +22,10 @@ class Waveform():
             signals.append(aranged_wave)
         signals = np.array(signals)[:, :, :, 0]
         return signals
+    
+    def averaged_wave(self, data:np.ndarray):
+        """Average the waveforms"""
+        self.data = data
+        averaged_wave = np.mean(self.data, axis=1)
+        return averaged_wave
+    

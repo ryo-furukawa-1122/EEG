@@ -17,7 +17,7 @@ class Loadings():
         self.directory = config['directory']
         self.date = config['date']
         self.file = config['file']
-        self.scale = config['scale']  # in mV
+        self.scale = config['scale']  # in uV
         return self.directory, self.date, self.file, self.scale
     
     def read_mat(self, file:str):

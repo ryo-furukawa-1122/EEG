@@ -17,12 +17,24 @@ class Filter():
         ws = [fs_low / fn, fs_high / fn]
         return [wp, ws, gpass, gstop]
 
-    def _bandpass_filter(self, data, fs:float):
+    def _bandpass_filter(self, wave, fs:float):
         """Return the bandpass filter"""
         self.fs = fs
-        N, Wn = signal.buttord(*self._filter_params(self.fs))
+        self.wave = wave
+        
+        params = self._filter_params(self.fs)
+        N, Wn = signal.buttord(*params)
         b, a = signal.butter(N, Wn, "band")
-        y = signal.filtfilt(b, a, data)
+        y = signal.filtfilt(b, a, wave)
+        return y
+    
+    def _lowpass_filter(self, wave, fs:float):
+        """Return the lowpass filter"""
+        self.fs = fs
+        params = self._filter_params(self.fs)
+        N, Wn = signal.buttord(*params)
+        b, a = signal.butter(N, Wn, "low")
+        y = signal.filtfilt(b, a, wave)
         return y
     
     def filter_signals(self, data, fs:float):
