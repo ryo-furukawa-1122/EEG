@@ -29,3 +29,5 @@ averaged_signals = wv.Waveform().averaged_wave(filtered_signals)
 
 # %%
 pl.Figure().plot_waves(t, averaged_signals, PRE_STIMULI, POST_STIMULI, chs, directory, date, file, scale)
+
+# %%

@@ -2,32 +2,29 @@ import numpy as np
 from scipy import signal
 
 class Filter():
+    def _shift_data(self, data):
+        """Return the shifted data"""
+        n_chs, n_trials, _ = data.shape
+        shifted_data = np.zeros_like(data)
+        for trial in range(n_trials):
+            for ch in range(n_chs):
+                shifted_data[ch, trial, :] = data[ch, trial, :] - np.mean(data[ch, trial, :])
+        return shifted_data
+
     def _filter_params(self, fs:float):
         """Return the filter parameters"""
-        fp_low = 0.3
-        fp_high = 100
-        fs_low = 0.1
-        fs_high = 120
-        gpass = 3
-        gstop = 20
+        f_pass = 150
+        f_stop = 100
+        g_pass = 1
+        g_stop = 20
 
         self.fs = fs
+
         fn = self.fs / 2
-        wp = [fp_low / fn, fp_high / fn]
-        ws = [fs_low / fn, fs_high / fn]
-        return [wp, ws, gpass, gstop]
+        wp = f_pass / fn
+        ws = f_stop / fn
+        return [wp, ws, g_pass, g_stop]
 
-    def _bandpass_filter(self, wave, fs:float):
-        """Return the bandpass filter"""
-        self.fs = fs
-        self.wave = wave
-        
-        params = self._filter_params(self.fs)
-        N, Wn = signal.buttord(*params)
-        b, a = signal.butter(N, Wn, "band")
-        y = signal.filtfilt(b, a, wave)
-        return y
-    
     def _lowpass_filter(self, wave, fs:float):
         """Return the lowpass filter"""
         self.fs = fs
@@ -42,7 +39,8 @@ class Filter():
         self.fs = fs
         n_chs, n_trials, _ = data.shape
         filtered_data = np.zeros_like(data)
+        unbiased_data = self._shift_data(data)
         for trial in range(n_trials):
             for ch in range(n_chs):
-                filtered_data[ch, trial, :] = self._bandpass_filter(data[ch, trial, :], self.fs)
+                filtered_data[ch, trial, :] = self._lowpass_filter(unbiased_data[ch, trial, :], self.fs)
         return filtered_data
