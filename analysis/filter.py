@@ -1,7 +1,8 @@
 import numpy as np
 from scipy import signal
+import general.loadings as ld
 
-class Filter():
+class Filter(ld.Logs):
     def _shift_data(self, data):
         """Return the shifted data"""
         n_chs, n_trials, _ = data.shape
@@ -36,11 +37,15 @@ class Filter():
     
     def filter_signals(self, data, fs:float):
         """Return the filtered signals"""
+
+        self.title("Filtering signals...", "yellow")
+
         self.fs = fs
         n_chs, n_trials, _ = data.shape
         filtered_data = np.zeros_like(data)
         unbiased_data = self._shift_data(data)
-        for trial in range(n_trials):
-            for ch in range(n_chs):
+        for ch in range(n_chs):
+            self.channel(ch, "gold")
+            for trial in range(n_trials):
                 filtered_data[ch, trial, :] = self._lowpass_filter(unbiased_data[ch, trial, :], self.fs)
         return filtered_data

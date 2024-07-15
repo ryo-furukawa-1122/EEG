@@ -8,7 +8,6 @@ import numpy as np
 
 E_NAME = "EVT01"
 FS, PRE_STIMULI, POST_STIMULI, chs, stimuli = st.Settings().set_basic_params()
-# kwargs_signal, kwargs_stimuli, ch_positions = st.Settings().set_plot_theme()
 directory, date, file, scale = ld.Loadings().read_config()
 data = ld.Loadings().read_mat(f'{directory}/{date}/{file}.mat')
 

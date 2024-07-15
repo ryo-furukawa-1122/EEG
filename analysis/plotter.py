@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
+import general.loadings as ld
 
-class Figure():
+class Figure(ld.Logs):
     def _set_plot_theme(self):
         """Set the plot theme"""
         plt.rcParams["font.size"] = 18
@@ -20,6 +21,9 @@ class Figure():
     
     def plot_waves(self, t:float, waves:float, PRE_STIMULI:float, POST_STIMULI:float, chs, directory:str, date:str, file:str, scale:float):
         """Plot the waves for all channels"""
+
+        self.title("Plotting waves...", "cyan")
+
         self.waves = waves
         self.chs = chs
         self.t = t

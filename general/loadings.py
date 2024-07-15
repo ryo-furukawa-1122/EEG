@@ -1,9 +1,22 @@
 import json
-import pandas as pd
 from rich import print
 from scipy.io import loadmat
 
-class Loadings():
+
+class Logs():
+    def title(self, text:str, color:str):
+        """Lot title of process"""
+        self.text = text
+        self.color = color
+        print(f"[bold {self.color}]{self.text}[/bold {self.color}]")
+
+    def channel(self, ch:int, color:str):
+        """Log message while processing each channel"""
+        self.ch = ch
+        self.color = color
+        print(f"[{self.color}]Processing ch {ch}...[/{self.color}]")
+
+class Loadings(Logs):
     def __init__(self):
         self.directory: str
         self.date: list[str]
@@ -12,6 +25,9 @@ class Loadings():
 
     def read_config(self):
         """Return the path of working directory, date, and file name"""
+
+        Logs.title(self, "Reading configuration...", "magenta")
+
         f = open('config.json')
         config = json.load(f)
         self.directory = config['directory']
@@ -22,16 +38,8 @@ class Loadings():
     
     def read_mat(self, file:str):
         """Read mat file and return dict"""
+
+        Logs.title(self, "Reading mat file...", "green")
+
         data = loadmat(file)
         return data
-
-class Logs():
-    def title(self, text:str):
-        """Lot title of process"""
-        self.text = text
-        print(f"[bold magenta]{self.text}[/bold magenta]")
-
-    def channel(self, ch:int):
-        """Log message while processing each channel"""
-        self.ch = ch
-        print(f"[blue]Processing ch {ch}...[/blue]")
