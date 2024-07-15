@@ -13,10 +13,10 @@ data = ld.Loadings().read_mat(f'{directory}/{date}/{file}.mat')
 
 t = np.arange(-PRE_STIMULI, POST_STIMULI, 1/FS)
 stim_number = stimuli["2 kHz"]
-lag = data[f"WB{chs[0]:02}_ts"]
+lag = data[f"WB{chs[0]:02}_ts"][0, 0]
 lag_sample = int(lag * FS)
 
-stim_times = data[E_NAME][stim_number::5] - lag
+stim_times = data[E_NAME][stim_number::5][:, 0] - lag
 stim_stamp = np.array([int((stim_time) * FS) for stim_time in stim_times])
 
 # %%

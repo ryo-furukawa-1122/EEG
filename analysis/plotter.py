@@ -4,7 +4,7 @@ import general.loadings as ld
 class Figure(ld.Logs):
     def _set_plot_theme(self):
         """Set the plot theme"""
-        plt.rcParams["font.size"] = 18
+        plt.rcParams["font.size"] = 16
         plt.rcParams["axes.linewidth"] = 1.4
         
         kwargs_signal = {
@@ -18,7 +18,40 @@ class Figure(ld.Logs):
         ch_positions = [3, 2, 1, 4, 5, 6]
 
         return kwargs_signal, kwargs_stimuli, ch_positions
-    
+
+    def _delete_axes(self):
+        """Delete the axes and spines"""
+        plt.tick_params(labelbottom=False,
+                        labelleft=False,
+                        labelright=False,
+                        labeltop=False)
+        plt.tick_params(bottom=False,
+                        left=False,
+                        right=False,
+                        top=False)
+        plt.gca().spines['right'].set_visible(False)
+        plt.gca().spines['left'].set_visible(False)
+        plt.gca().spines['top'].set_visible(False)
+        plt.gca().spines['bottom'].set_visible(False)
+
+    def _set_scale_bars(self, ax, scale:float):
+        """Set the scale bars"""
+        self.scale = scale
+        self.VSCALE = scale / 2  # in uV
+        self.HSCALE = 0.2  # in s
+        self.HSCALE_START = 0.5
+        self.ax = ax
+
+        kwargs_scale = {
+            "color": "black",
+            "linewidth": 4
+        }
+
+        # Vertical scale bar
+        self.ax.plot([self.HSCALE_START + self.HSCALE, self.HSCALE_START+self.HSCALE], [-self.scale*0.9, -self.scale*0.9 + self.VSCALE], **kwargs_scale)
+        # Horizontal scale bar
+        self.ax.plot([self.HSCALE_START, self.HSCALE_START+self.HSCALE], [-self.scale*0.9, -self.scale*0.9], **kwargs_scale)
+
     def plot_waves(self, t:float, waves:float, PRE_STIMULI:float, POST_STIMULI:float, chs, directory:str, date:str, file:str, scale:float):
         """Plot the waves for all channels"""
 
@@ -44,10 +77,14 @@ class Figure(ld.Logs):
             ax.plot([0, 0], [-self.scale, self.scale], **kwargs_stimuli)
             ax.plot(self.t, self.waves[c]*1e3, **kwargs_signal)
             ax.set_title(f"Ch {c+1}")
-            ax.set_xlabel("Time (s)")
-            ax.set_ylabel("Voltage (\u03bcV)")
+            # ax.set_xlabel("Time (s)")
+            # ax.set_ylabel("Voltage (\u03bcV)")
             ax.set_xlim([-self.PRE_STIMULI, self.POST_STIMULI])
             ax.set_ylim([-self.scale, self.scale])
-        
+
+            self._delete_axes()
+
+        self._set_scale_bars(ax, self.scale)
+
         plt.savefig(f"{self.directory}/{self.date}/{self.file}_waves.png")
         plt.close()
