@@ -14,7 +14,7 @@
 ## Preparation
 ```config.json
 {
-    "directory": "working directory",
+    "directory": "path of the directory",
     "date": "experimental date",
     "file": "name of mat file",
     "scale": "EEG scale to use in plot"
