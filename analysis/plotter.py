@@ -15,9 +15,14 @@ class Figure(ld.Logs):
             "color": "royalblue",
             "linewidth": 1
         }
+        kwargs_baseline = {
+            "color": "gray",
+            "linewidth": 1,
+            "linestyle": "dotted"
+        }
         ch_positions = [3, 2, 1, 4, 5, 6]
 
-        return kwargs_signal, kwargs_stimuli, ch_positions
+        return kwargs_signal, kwargs_stimuli, kwargs_baseline, ch_positions
 
     def _delete_axes(self):
         """Delete the axes and spines"""
@@ -52,7 +57,7 @@ class Figure(ld.Logs):
         # Horizontal scale bar
         self.ax.plot([self.HSCALE_START, self.HSCALE_START+self.HSCALE], [-self.scale*0.9, -self.scale*0.9], **kwargs_scale)
 
-    def plot_waves(self, t:float, waves:float, PRE_STIMULI:float, POST_STIMULI:float, chs, directory:str, date:str, file:str, scale:float):
+    def plot_waves(self, t:float, waves:float, PRE_STIMULI:float, POST_STIMULI:float, chs, directory:str, date:str, file:str, scale:float, STIM_NAME:str):
         """Plot the waves for all channels"""
 
         self.title("Plotting waves...", "cyan")
@@ -66,19 +71,21 @@ class Figure(ld.Logs):
         self.date = date
         self.file = file
         self.scale = scale
+        self.STIM_NAME = STIM_NAME
 
         ch_num = len(self.chs)
 
-        kwargs_signal, kwargs_stimuli, ch_positions = self._set_plot_theme()
+        kwargs_signal, kwargs_stimuli, kwargs_baseline, ch_positions = self._set_plot_theme()
 
         fig = plt.figure(dpi=900)
         for c in range(ch_num):
             ax = fig.add_subplot(2, 3, ch_positions[c])
+
             ax.plot([0, 0], [-self.scale, self.scale], **kwargs_stimuli)
+            ax.plot([-self.PRE_STIMULI, self.POST_STIMULI], [0, 0], **kwargs_baseline)
             ax.plot(self.t, self.waves[c]*1e3, **kwargs_signal)
+
             ax.set_title(f"Ch {c+1}")
-            # ax.set_xlabel("Time (s)")
-            # ax.set_ylabel("Voltage (\u03bcV)")
             ax.set_xlim([-self.PRE_STIMULI, self.POST_STIMULI])
             ax.set_ylim([-self.scale, self.scale])
 
@@ -86,5 +93,5 @@ class Figure(ld.Logs):
 
         self._set_scale_bars(ax, self.scale)
 
-        plt.savefig(f"{self.directory}/{self.date}/{self.file}_waves.png")
+        plt.savefig(f"{self.directory}/{self.date}/{self.file}_{self.STIM_NAME}_{self.scale / 2}uV.png")
         plt.close()

@@ -45,7 +45,7 @@ class Filter(ld.Logs):
         filtered_data = np.zeros_like(data)
         unbiased_data = self._shift_data(data)
         for ch in range(n_chs):
-            self.channel(ch, "gold")
+            self.channel(ch+1, "gold")
             for trial in range(n_trials):
                 filtered_data[ch, trial, :] = self._lowpass_filter(unbiased_data[ch, trial, :], self.fs)
         return filtered_data

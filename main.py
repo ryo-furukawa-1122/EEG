@@ -7,12 +7,14 @@ import analysis.plotter as pl
 import numpy as np
 
 E_NAME = "EVT01"
+STIM_NAME = "16 kHz"
+ld.Loadings().title(STIM_NAME, "blue")
 FS, PRE_STIMULI, POST_STIMULI, chs, stimuli = st.Settings().set_basic_params()
 directory, date, file, scale = ld.Loadings().read_config()
 data = ld.Loadings().read_mat(f'{directory}/{date}/{file}.mat')
 
 t = np.arange(-PRE_STIMULI, POST_STIMULI, 1/FS)
-stim_number = stimuli["2 kHz"]
+stim_number = stimuli[STIM_NAME]
 lag = data[f"WB{chs[0]:02}_ts"][0, 0]
 lag_sample = int(lag * FS)
 
@@ -27,6 +29,6 @@ filtered_signals = fl.Filter().filter_signals(signals, FS)
 averaged_signals = wv.Waveform().averaged_wave(filtered_signals)
 
 # %%
-pl.Figure().plot_waves(t, averaged_signals, PRE_STIMULI, POST_STIMULI, chs, directory, date, file, scale)
+pl.Figure().plot_waves(t, averaged_signals, PRE_STIMULI, POST_STIMULI, chs, directory, date, file, scale, STIM_NAME)
 
 # %%
