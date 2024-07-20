@@ -20,7 +20,7 @@ class Figure(ld.Logs):
             "linewidth": 1,
             "linestyle": "dotted"
         }
-        ch_positions = [3, 2, 1, 4, 5, 6]
+        ch_positions = [1, 2, 3, 4, 5, 6]
 
         return kwargs_signal, kwargs_stimuli, kwargs_baseline, ch_positions
 
@@ -93,5 +93,5 @@ class Figure(ld.Logs):
 
         self._set_scale_bars(ax, self.scale)
 
-        plt.savefig(f"{self.directory}/{self.date}/{self.file}_{self.STIM_NAME}_{self.scale / 2}uV.png")
+        plt.savefig(f"{self.directory}/{self.date}/{self.file}_{self.STIM_NAME}_{self.scale / 2}uV.png", bbox_inches="tight")
         plt.close()
