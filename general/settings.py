@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 class Settings():
     def __init__(self):
@@ -11,10 +10,10 @@ class Settings():
 
     def set_basic_params(self):
         """Return the basic parameters"""
-        self.FS = 40e3
+        self.FS = 1e3
         self.PRE_STIMULI = 0.2  # in s
         self.POST_STIMULI = 0.8  # in s
-        self.chs = np.arange(9, 15)
+        self.chs = np.arange(1, 9)
         self.stimuli:dict = {
             "2 kHz": 0,
             "4 kHz": 1,

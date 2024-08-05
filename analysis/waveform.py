@@ -12,7 +12,7 @@ class Waveform():
         
         signals = []
         for ch in self.chs:
-            wave = self.data[f"WB{ch:02}"]
+            wave = self.data[f"FP{ch:02}"]
             aranged_wave = []
             for stamp in self.stim_stamp:
                 start_index = int(stamp - int(self.PRE_STIMULI*self.FS))

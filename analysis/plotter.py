@@ -4,6 +4,7 @@ import general.loadings as ld
 class Figure(ld.Logs):
     def _set_plot_theme(self):
         """Set the plot theme"""
+        plt.rcParams["font.family"] = "Arial"
         plt.rcParams["font.size"] = 16
         plt.rcParams["axes.linewidth"] = 1.4
         
@@ -20,7 +21,7 @@ class Figure(ld.Logs):
             "linewidth": 1,
             "linestyle": "dotted"
         }
-        ch_positions = [1, 2, 3, 4, 5, 6]
+        ch_positions = [5, 3, 1, 8, 7, 6]
 
         return kwargs_signal, kwargs_stimuli, kwargs_baseline, ch_positions
 
@@ -57,13 +58,12 @@ class Figure(ld.Logs):
         # Horizontal scale bar
         self.ax.plot([self.HSCALE_START, self.HSCALE_START+self.HSCALE], [-self.scale*0.9, -self.scale*0.9], **kwargs_scale)
 
-    def plot_waves(self, t:float, waves:float, PRE_STIMULI:float, POST_STIMULI:float, chs, directory:str, date:str, file:str, scale:float, STIM_NAME:str):
+    def plot_waves(self, t:float, waves:float, PRE_STIMULI:float, POST_STIMULI:float, directory:str, date:str, file:str, scale:float, STIM_NAME:str):
         """Plot the waves for all channels"""
 
         self.title("Plotting waves...", "cyan")
 
         self.waves = waves
-        self.chs = chs
         self.t = t
         self.PRE_STIMULI = PRE_STIMULI
         self.POST_STIMULI = POST_STIMULI
@@ -73,17 +73,17 @@ class Figure(ld.Logs):
         self.scale = scale
         self.STIM_NAME = STIM_NAME
 
-        ch_num = len(self.chs)
-
         kwargs_signal, kwargs_stimuli, kwargs_baseline, ch_positions = self._set_plot_theme()
+
+        ch_num = len(ch_positions)
 
         fig = plt.figure(dpi=900)
         for c in range(ch_num):
-            ax = fig.add_subplot(2, 3, ch_positions[c])
+            ax = fig.add_subplot(2, 3, c+1)
 
             ax.plot([0, 0], [-self.scale, self.scale], **kwargs_stimuli)
             ax.plot([-self.PRE_STIMULI, self.POST_STIMULI], [0, 0], **kwargs_baseline)
-            ax.plot(self.t, self.waves[c]*1e3, **kwargs_signal)
+            ax.plot(self.t, self.waves[ch_positions[c]-1]*1e3, **kwargs_signal)
 
             ax.set_title(f"Ch {c+1}")
             ax.set_xlim([-self.PRE_STIMULI, self.POST_STIMULI])
