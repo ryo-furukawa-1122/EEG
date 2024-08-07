@@ -14,10 +14,10 @@ class Filter(ld.Logs):
 
     def _filter_params(self, fs:float):
         """Return the filter parameters"""
-        # f_pass = 150
-        # f_stop = 100
-        f_pass = 100
-        f_stop = 50
+        # f_pass = 100
+        # f_stop = 50
+        f_pass = 20
+        f_stop = 10
         g_pass = 1
         g_stop = 20
 

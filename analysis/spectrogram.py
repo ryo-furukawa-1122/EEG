@@ -36,7 +36,7 @@ class TimeFrequencyAnalyzer(ld.Logs):
         
         self.title("Computing time-frequency analysis...", "green")
         
-        f, t, Sxx = spectrogram(self.signal, self.FS, nperseg=256, noverlap=200)
+        f, t, Sxx = spectrogram(self.signal, self.FS, nperseg=4096, noverlap=2048)
         return f, t, Sxx
     
     def plot_time_frequency(self, time:float, waves:float, PRE_STIMULI:float, POST_STIMULI:float, directory:str, date:str, file:str, scale:float, STIM_NAME:str):
@@ -63,7 +63,7 @@ class TimeFrequencyAnalyzer(ld.Logs):
             fig, ax = plt.subplots(dpi=900)
 
             # pcm = ax.pcolormesh(t-self.PRE_STIMULI, f, 10*np.log10(Sxx), cmap="jet", vmin=0)
-            im = ax.imshow(10*np.log10(Sxx), cmap="jet", extent=[t[0]-self.PRE_STIMULI, t[-1]-self.PRE_STIMULI, f[0], f[-1]], aspect="auto", vmax=-30)
+            im = ax.imshow(10*np.log10(Sxx), cmap="jet", extent=[t[0]-self.PRE_STIMULI, t[-1]-self.PRE_STIMULI, f[0], f[-1]], aspect="auto", vmax=-100)
 
             ax.set_ylabel('Frequency (Hz)')
             ax.set_xlabel('Time (s)')

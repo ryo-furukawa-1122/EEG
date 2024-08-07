@@ -33,4 +33,4 @@ averaged_signals = wv.Waveform().averaged_wave(filtered_signals)
 pl.Figure().plot_waves(t, averaged_signals, PRE_STIMULI, POST_STIMULI, directory, date, file, scale, STIM_NAME)
 
 # %%
-sp.TimeFrequencyAnalyzer(FS).plot_time_frequency(t, averaged_signals, PRE_STIMULI, POST_STIMULI, directory, date, file, scale, STIM_NAME)
+# sp.TimeFrequencyAnalyzer(FS).plot_time_frequency(t, averaged_signals, PRE_STIMULI, POST_STIMULI, directory, date, file, scale, STIM_NAME)
