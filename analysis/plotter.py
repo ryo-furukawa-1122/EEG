@@ -1,8 +1,12 @@
 import matplotlib.pyplot as plt
 import general.loadings as ld
+import pandas as pd
 
 class Figure(ld.Logs):
-    def _set_plot_theme(self):
+    def __init__(self):
+        self.EXPORT_CH:int = 2
+    
+    def set_plot_theme(self):
         """Set the plot theme"""
         plt.rcParams["font.family"] = "Arial"
         plt.rcParams["font.size"] = 16
@@ -25,7 +29,7 @@ class Figure(ld.Logs):
 
         return kwargs_signal, kwargs_stimuli, kwargs_baseline, ch_positions
 
-    def _delete_axes(self):
+    def delete_axes(self):
         """Delete the axes and spines"""
         plt.tick_params(labelbottom=False,
                         labelleft=False,
@@ -40,7 +44,17 @@ class Figure(ld.Logs):
         plt.gca().spines['top'].set_visible(False)
         plt.gca().spines['bottom'].set_visible(False)
 
-    def _set_scale_bars(self, ax, scale:float):
+    def _save_csv(self, t:float, wave:float, ch:int):
+        """Save the data in a csv file"""
+        self.ch = ch
+        data = {
+            "Time": t,
+            "Wave": wave
+        }
+        df = pd.DataFrame(data)
+        df.to_csv(f"{self.directory}/{self.date}/csv/{self.file}_{self.STIM_NAME}_ch{self.ch}.csv", index=False, header=False)
+
+    def set_scale_bars(self, ax, scale:float):
         """Set the scale bars"""
         self.scale = scale
         self.VSCALE = scale / 2  # in uV
@@ -73,7 +87,7 @@ class Figure(ld.Logs):
         self.scale = scale
         self.STIM_NAME = STIM_NAME
 
-        kwargs_signal, kwargs_stimuli, kwargs_baseline, ch_positions = self._set_plot_theme()
+        kwargs_signal, kwargs_stimuli, kwargs_baseline, ch_positions = self.set_plot_theme()
 
         ch_num = len(ch_positions)
 
@@ -89,9 +103,12 @@ class Figure(ld.Logs):
             ax.set_xlim([-self.PRE_STIMULI, self.POST_STIMULI])
             ax.set_ylim([-self.scale, self.scale])
 
-            self._delete_axes()
+            self.delete_axes()
+            
+            if c == self.EXPORT_CH-1:
+                self._save_csv(self.t, self.waves[ch_positions[c]-1], self.EXPORT_CH)
 
-        self._set_scale_bars(ax, self.scale)
+        self.set_scale_bars(ax, self.scale)
 
         plt.savefig(f"{self.directory}/{self.date}/{self.file}_{self.STIM_NAME}_{self.scale / 2}uV.png", bbox_inches="tight")
         plt.close()

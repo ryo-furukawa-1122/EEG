@@ -16,8 +16,8 @@ class Filter(ld.Logs):
         """Return the filter parameters"""
         # f_pass = 100
         # f_stop = 50
-        f_pass = 20
-        f_stop = 10
+        f_pass = 30
+        f_stop = 20
         g_pass = 1
         g_stop = 20
 
