@@ -1,6 +1,11 @@
 {
     "directory": "/Users/ryo/Files/Study/PMUT/EEG",
-    "date": "20240805",
-    "file": "20240805",
-    "scale": 30
+    "date": "20240813",
+    "file": "20240813",
+    "scale": 15,
+    "analysis_ids": [
+        "20240805",
+        "20240806",
+        "20240813"
+    ]
 }

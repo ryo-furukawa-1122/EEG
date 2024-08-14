@@ -4,7 +4,7 @@ import pandas as pd
 
 class Figure(ld.Logs):
     def __init__(self):
-        self.EXPORT_CH:int = 2
+        self.EXPORT_CH:int = 1
     
     def set_plot_theme(self):
         """Set the plot theme"""

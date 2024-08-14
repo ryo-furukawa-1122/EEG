@@ -8,7 +8,7 @@ import analysis.spectrogram as sp
 import numpy as np
 
 E_NAME = "EVT01"
-STIM_NAME = "2 kHz"
+STIM_NAME = "32 kHz"
 ld.Loadings().title(STIM_NAME, "blue")
 FS, PRE_STIMULI, POST_STIMULI, chs, stimuli = st.Settings().set_basic_params()
 directory, date, file, scale = ld.Loadings().read_config()

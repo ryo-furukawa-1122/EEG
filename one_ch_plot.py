@@ -8,7 +8,7 @@ import analysis.plotter as pl
 FS, PRE_STIMULI, POST_STIMULI, chs, stimuli = st.Settings().set_basic_params()
 directory, date, file, scale = ld.Loadings().read_config()
 
-PLOT_CH:int = 2
+PLOT_CH:int = 1
 # %%
 kwargs_signal, kwargs_stimuli, kwargs_baseline, _ = pl.Figure().set_plot_theme()
 fig = plt.figure(dpi=900, figsize=(12, 2))
@@ -30,7 +30,7 @@ for i in range(len(stimuli)):
 
 pl.Figure().set_scale_bars(ax, scale)
 
-plt.savefig(f"{directory}/{date}/csv/{file}_ch{PLOT_CH}.png", bbox_inches="tight")
+plt.savefig(f"{directory}/{date}/csv/{file}_ch{PLOT_CH}_{scale / 2}uV.png", bbox_inches="tight")
 plt.close()
 
 # %%
