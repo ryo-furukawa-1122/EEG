@@ -8,13 +8,13 @@ import analysis.plotter as pl
 FS, PRE_STIMULI, POST_STIMULI, chs, stimuli = st.Settings().set_basic_params()
 directory, date, file, scale = ld.Loadings().read_config()
 
-PLOT_CH:int = 1
+PLOT_CH:int = 6
 # %%
 kwargs_signal, kwargs_stimuli, kwargs_baseline, _ = pl.Figure().set_plot_theme()
 fig = plt.figure(dpi=900, figsize=(12, 2))
 
 for i in range(len(stimuli)):
-    data = pd.read_csv(f"{directory}/{date}/csv/{file}_{list(stimuli.keys())[i]}_ch{PLOT_CH}.csv", header=None)
+    data = pd.read_csv(f"{directory}/{date}/csv/{file}_ch{PLOT_CH}_{list(stimuli.keys())[i]}.csv", header=None)
 
     ax = fig.add_subplot(1, len(stimuli), i+1)
 

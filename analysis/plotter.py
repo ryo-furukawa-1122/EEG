@@ -4,7 +4,7 @@ import pandas as pd
 
 class Figure(ld.Logs):
     def __init__(self):
-        self.EXPORT_CH:int = 1
+        self.EXPORT_CH:int = 6
     
     def set_plot_theme(self):
         """Set the plot theme"""
@@ -52,7 +52,7 @@ class Figure(ld.Logs):
             "Wave": wave
         }
         df = pd.DataFrame(data)
-        df.to_csv(f"{self.directory}/{self.date}/csv/{self.file}_{self.STIM_NAME}_ch{self.ch}.csv", index=False, header=False)
+        df.to_csv(f"{self.directory}/{self.date}/csv/{self.file}_ch{self.ch}_{self.STIM_NAME}.csv", index=False, header=False)
 
     def set_scale_bars(self, ax, scale:float):
         """Set the scale bars"""

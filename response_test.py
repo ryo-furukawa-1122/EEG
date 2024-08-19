@@ -14,7 +14,6 @@ plt.rcParams["axes.linewidth"] = 1.4
 f = open("config.json")
 config = json.load(f)
 directory = config["directory"]
-ids = config["analysis_ids"]
 f.close()
 
 # %%
@@ -22,14 +21,17 @@ STIMULI:list[int] = [2, 4, 8, 16, 32]
 FS:float = 1e3
 PRE_STIMULI:float = 0.2
 POST_STIMULI:float = 0.5
-N:int = len(ids)
+
+csv_files = natsorted(glob.glob(f"{directory}/Amplitude/csv/*.csv"))
+
+N:int = int(len(csv_files)/len(STIMULI))
 
 amplitude:np.ndarray[float] = np.zeros([N, len(STIMULI), 2])
-
+# %%
 for i in range(N):
-    csv_files = natsorted(glob.glob(f"{directory}/{ids[i]}/csv/*.csv"))
+    file_set = csv_files[i*len(STIMULI):(i+1)*len(STIMULI)]
     for j in range(len(STIMULI)):
-        data = pd.read_csv(csv_files[j], header=None)
+        data = pd.read_csv(file_set[j], header=None)
         amplitude[i, j, 0] = np.max(np.abs(data[1][:int(FS*PRE_STIMULI)]))  # Baseline
         amplitude[i, j, 1] = np.max(np.abs(data[1][int(FS*PRE_STIMULI):int(FS*POST_STIMULI)]))  # Response
 
@@ -37,6 +39,11 @@ amplitude *= 1e3
 # %%
 color1 = '#FC5185'
 color2 = '#3FC1C9'
+
+boxprops = dict(linewidth=2)
+whiskerprops = dict(linewidth=2)
+capprops = dict(linewidth=2)
+
 kwargs = {
     "showmeans": True,
     "meanprops": {
@@ -47,10 +54,13 @@ kwargs = {
     },
     "medianprops": {
         "color": color2,
-        "linewidth": 1,
+        "linewidth": 2,
         "linestyle": "solid"
     },
-    "widths": 0.5
+    "widths": 0.5,
+    "boxprops": boxprops,
+    "whiskerprops": whiskerprops,
+    "capprops": capprops
 }
 
 fig = plt.figure(dpi=900, figsize=(12, 2))
@@ -58,10 +68,10 @@ for j in range(len(STIMULI)):
     ax = fig.add_subplot(1, len(STIMULI), j+1)
     ax.boxplot([amplitude[:, j, 0], amplitude[:, j, 1]], **kwargs)
     for i in range(N):
-        ax.plot([1, 2], amplitude[i, j, :], linewidth=1, linestyle="dotted", color="#00000055")
+        ax.plot([1, 2], amplitude[i, j, :], linewidth=1, linestyle="dotted", color="gray")
     ax.set_xticklabels(["Pre", "Post"])
     ax.set_title(f"{STIMULI[j]} kHz")
-    ax.set_ylim([0, 15])
+    ax.set_ylim([0, 10])
     if j==0:
         ax.set_ylabel("Amplitude (\u03bcV)")
     
