@@ -1,8 +1,8 @@
 {
     "directory": "/Users/ryo/Files/Study/PMUT/EEG",
-    "date": "20240817",
-    "file": "20240817",
-    "scale": 10,
+    "date": "20241118",
+    "file": "20241118_pre",
+    "scale": 200,
     "analysis_ids": [
         "20240816_a",
         "20240816_b",

@@ -112,3 +112,43 @@ class Figure(ld.Logs):
 
         plt.savefig(f"{self.directory}/{self.date}/{self.file}_{self.STIM_NAME}_{self.scale / 2}uV.png", bbox_inches="tight")
         plt.close()
+
+    def plot_two_waves(self, t:float, wave_pre:float, wave_post:float, PRE_STIMULI:float, POST_STIMULI:float, directory:str, date:str, file:str, scale:float, STIM_NAME:str):
+        """Plot the waves for all channels"""
+
+        self.title("Plotting waves...", "cyan")
+
+        self.wave_pre = wave_pre
+        self.wave_post = wave_post
+        self.t = t
+        self.PRE_STIMULI = PRE_STIMULI
+        self.POST_STIMULI = POST_STIMULI
+        self.directory = directory
+        self.date = date
+        self.file = file
+        self.scale = scale
+        self.STIM_NAME = STIM_NAME
+
+        kwargs_signal, kwargs_stimuli, kwargs_baseline, ch_positions = self.set_plot_theme()
+
+        ch_num = len(ch_positions)
+
+        fig = plt.figure(dpi=900)
+        for c in range(ch_num):
+            ax = fig.add_subplot(2, 3, c+1)
+
+            ax.plot([0, 0], [-self.scale, self.scale], **kwargs_stimuli)
+            ax.plot([-self.PRE_STIMULI, self.POST_STIMULI], [0, 0], **kwargs_baseline)
+            ax.plot(self.t, self.wave_pre[ch_positions[c]-1]*1e3, **kwargs_signal)
+            ax.plot(self.t, self.wave_post[ch_positions[c]-1]*1e3, linewidth=2, color="#FC5185")
+
+            ax.set_title(f"Ch {c+1}")
+            ax.set_xlim([-self.PRE_STIMULI, self.POST_STIMULI])
+            ax.set_ylim([-self.scale, self.scale])
+
+            self.delete_axes()
+            
+        self.set_scale_bars(ax, self.scale)
+
+        plt.savefig(f"{self.directory}/{self.date}/{self.file}_{self.STIM_NAME}_{self.scale / 2}uV_plasticity.png", bbox_inches="tight")
+        plt.close()

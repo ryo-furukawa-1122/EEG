@@ -37,6 +37,25 @@ class Filter(ld.Logs):
         y = signal.filtfilt(b, a, wave)
         return y
     
+    def _highpass_filter(self, wave, fs:float):
+        """Return the highpass filter"""
+        self.fs = fs
+        f_pass = 0.1
+        f_stop = 2
+        g_pass = 1
+        g_stop = 20
+
+        self.fs = fs
+
+        fn = self.fs / 2
+        wp = f_pass / fn
+        ws = f_stop / fn
+        params = [wp, ws, g_pass, g_stop]
+        N, Wn = signal.buttord(*params)
+        b, a = signal.butter(N, Wn, "high")
+        y = signal.filtfilt(b, a, wave)
+        return y
+    
     def filter_signals(self, data, fs:float):
         """Return the filtered signals"""
 
@@ -50,4 +69,5 @@ class Filter(ld.Logs):
             self.channel(ch+1, "gold")
             for trial in range(n_trials):
                 filtered_data[ch, trial, :] = self._lowpass_filter(unbiased_data[ch, trial, :], self.fs)
+                filtered_data[ch, trial, :] = self._highpass_filter(filtered_data[ch, trial, :], self.fs)
         return filtered_data
