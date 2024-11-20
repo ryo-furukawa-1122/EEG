@@ -58,8 +58,10 @@ class Figure(ld.Logs):
         """Set the scale bars"""
         self.scale = scale
         self.VSCALE = scale / 2  # in uV
-        self.HSCALE = 0.2  # in s
-        self.HSCALE_START = 0.5
+        # self.HSCALE = 0.2  # in s
+        # self.HSCALE_START = 0.5
+        self.HSCALE = 0.1  # in s
+        self.HSCALE_START = 0.15
         self.ax = ax
 
         kwargs_scale = {
