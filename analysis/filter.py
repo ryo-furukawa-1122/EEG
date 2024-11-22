@@ -69,5 +69,5 @@ class Filter(ld.Logs):
             self.channel(ch+1, "gold")
             for trial in range(n_trials):
                 filtered_data[ch, trial, :] = self._lowpass_filter(unbiased_data[ch, trial, :], self.fs)
-                filtered_data[ch, trial, :] = self._highpass_filter(filtered_data[ch, trial, :], self.fs)
+                # filtered_data[ch, trial, :] = self._highpass_filter(filtered_data[ch, trial, :], self.fs)
         return filtered_data
