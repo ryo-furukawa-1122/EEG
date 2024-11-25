@@ -9,7 +9,7 @@ FS, PRE_STIMULI, POST_STIMULI, chs, stimuli = st.Settings().set_basic_params()
 directory, date, file, scale = ld.Loadings().read_config()
 kwargs_signal, kwargs_stimuli, kwargs_baseline, _ = pl.Figure().set_plot_theme()
 
-PLOT_CH:int = 6
+PLOT_CH:int = 4
 
 data_pre = pd.read_csv(f"{directory}/{date}/csv/{date}_pre_ch{PLOT_CH}_4 kHz.csv", header=None)
 data_post = pd.read_csv(f"{directory}/{date}/csv/{date}_post_ch{PLOT_CH}_4 kHz.csv", header=None)
