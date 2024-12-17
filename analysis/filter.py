@@ -41,7 +41,7 @@ class Filter(ld.Logs):
         """Return the highpass filter"""
         self.fs = fs
         f_pass = 0.1
-        f_stop = 2
+        f_stop = 0.2
         g_pass = 1
         g_stop = 20
 
