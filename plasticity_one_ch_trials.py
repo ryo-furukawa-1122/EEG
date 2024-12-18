@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 E_NAME = "EVT01"
 STIM_NAME = "4 kHz"
-PLOT_CH:int = 6
+PLOT_CH:int = 4
 
 ld.Loadings().title(STIM_NAME, "blue")
 FS, PRE_STIMULI, POST_STIMULI, chs, stimuli = st.Settings().set_basic_params()
@@ -52,12 +52,12 @@ kwargs_post = {
 kwargs_trial_pre = {
     "linewidth": 1,
     "color": "black",
-    "alpha": 0.25,
+    "alpha": 0.1,
 }
 kwargs_trial_post = {
     "linewidth": 1,
     "color": "#FC5185",
-    "alpha": 0.25,
+    "alpha": 0.1,
 }
 
 fig = plt.figure(dpi=900)
@@ -68,8 +68,12 @@ for trial in range(filtered_signals_pre.shape[1]):
     plt.plot(t, filtered_signals_pre[PLOT_CH-1, trial, :] * 1e3, **kwargs_trial_pre)
     plt.plot(t, filtered_signals_post[PLOT_CH, trial, :] * 1e3, **kwargs_trial_post)
 
-plt.plot(t, np.mean(filtered_signals_pre[PLOT_CH-1, :, :], axis=0) * 1e3, **kwargs_pre)
-plt.plot(t, np.mean(filtered_signals_post[PLOT_CH-1, :, :], axis=0) * 1e3, **kwargs_post)
+
+zero_pre = np.mean(filtered_signals_pre[PLOT_CH-1, :, :], axis=0)[int(PRE_STIMULI*FS)] * 1e3
+zero_post = np.mean(filtered_signals_post[PLOT_CH-1, :, :], axis=0)[int(PRE_STIMULI*FS)] * 1e3
+
+plt.plot(t, np.mean(filtered_signals_pre[PLOT_CH-1, :, :], axis=0) * 1e3 - zero_pre, **kwargs_pre)
+plt.plot(t, np.mean(filtered_signals_post[PLOT_CH-1, :, :], axis=0) * 1e3 - zero_post, **kwargs_post)
 
 plt.xlim([-PRE_STIMULI, POST_STIMULI])
 plt.ylim([-scale, scale])

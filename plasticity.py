@@ -42,7 +42,19 @@ filtered_signals_post = fl.Filter().filter_signals(signals_post, FS)
 averaged_signals_post = wv.Waveform().averaged_wave(filtered_signals_post)
 
 # %%
-pl.Figure().plot_two_waves(t, averaged_signals_pre, averaged_signals_post, PRE_STIMULI, POST_STIMULI, directory, date, file, scale, STIM_NAME)
+zero_pre = averaged_signals_pre[:, int(FS*PRE_STIMULI)]
+zero_post = averaged_signals_post[:, int(FS*PRE_STIMULI)]
+
+onset_shifted_pre = np.zeros_like(averaged_signals_pre)
+onset_shifted_post = np.zeros_like(averaged_signals_post)
+
+for i in range(len(t)):
+    onset_shifted_pre[:, i] = averaged_signals_pre[:, i] - zero_pre
+    onset_shifted_post[:, i] = averaged_signals_post[:, i] - zero_post
+    
+
+# %%
+pl.Figure().plot_two_waves(t, onset_shifted_pre, onset_shifted_post, PRE_STIMULI, POST_STIMULI, directory, date, file, scale, STIM_NAME)
 
 # %%
 # sp.TimeFrequencyAnalyzer(FS).plot_time_frequency(t, averaged_signals, PRE_STIMULI, POST_STIMULI, directory, date, file, scale, STIM_NAME)
