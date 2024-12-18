@@ -13,12 +13,14 @@ PLOT_CH:int = 4
 
 data_pre = pd.read_csv(f"{directory}/{date}/csv/{date}_pre_ch{PLOT_CH}_4 kHz.csv", header=None)
 data_post = pd.read_csv(f"{directory}/{date}/csv/{date}_post_ch{PLOT_CH}_4 kHz.csv", header=None)
+# data_post_20 = pd.read_csv(f"{directory}/{date}/csv/{date}_post_20_ch{PLOT_CH}_4 kHz.csv", header=None)
 # %%
 fig = plt.figure(dpi=900)
 plt.plot([0, 0], [-scale, scale], **kwargs_stimuli)
 plt.plot([-PRE_STIMULI, POST_STIMULI], [0, 0], **kwargs_baseline)
 plt.plot(data_pre[0], data_pre[1]*1e3, linewidth=4, color="black")
 plt.plot(data_post[0], data_post[1]*1e3, linewidth=4, color="#FC5185")
+# plt.plot(data_post_20[0], data_post_20[1]*1e3, linewidth=4, color="#3FC1C9")
 plt.xlim([-PRE_STIMULI, POST_STIMULI])
 plt.ylim([-scale, scale])
 pl.Figure().delete_axes()
